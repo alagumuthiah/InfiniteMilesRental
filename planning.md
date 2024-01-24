@@ -81,7 +81,8 @@ InfiniteMilesRental - a car rental application that lists different car rentals 
     * pickup time
     * drop location
     * drop time
-    * carId - foreign key from car table
+    * carId - foreign key from car table (this gets updated when a user picks up a car)
+    * booking status (active/ inactive) ( updated to active when the user picks up a car)
     * protected - boolean
     * cost (cost of the booking)
 
@@ -89,21 +90,56 @@ InfiniteMilesRental - a car rental application that lists different car rentals 
     * Id
     * Name
     * SupplierId (Foreign Key)
-    * Category (ENUM)
+    * Category Id (Foreign Key)
     * Gear (Automatic/Manual)
-    * Seats
-    * Bags
-    * Price (for a Day)
     * Images
-    * Booked - boolean
-    * locationId (Foreign Key)
+    * locationId (Foreign Key) - Base location
 
-Check on how to account for cars which will be dropped at a location in the future date
+When a person books a car for different pick-up and drop location for 10 days, I block the vehicle for 13 days - quote the price for the car for 13 days. And return the car to the base location.
+
+The car can be rented only from the base location, if it goes to a different location the rental companies make sure to return it to the base location
+
+- Price
+    * id
+    * categoryId (Foreign Key)
+    * supplier Id (Foreign Key)
+    * date
+    * price
+
+Create separate tables for different category to maintain availability supplierwise and date
+
+- SUV Availability
+    * id
+    * date (for a year - 365 rows)
+    * Enterprise (count)
+    * Sixt (count)
+    * Alamo (count)
+
+- Sedan Availability
+    * id
+    * date (for a year - 365 rows)
+    * Enterprise (count)
+    * Sixt (count)
+    * Alamo (count)
+
+- Large Availability
+    * id
+    * date (for a year - 365 rows)
+    * Enterprise (count)
+    * Sixt (count)
+    * Alamo (count)
 
 - Supplier
     * id
     * name
     * description
+
+- Category (SUV, Sedan)
+    * id
+    * name
+    * Seats
+    * Bags
+
 
 - Location
     * Id
@@ -113,7 +149,8 @@ Check on how to account for cars which will be dropped at a location in the futu
 - Reviews
     * ReviewId
     * UserID (Foreign Key)
-    * CarId (Foreign Key)
+    * CategoryId (Foreign Key)
+    * SupplierId (Foreign Key)
     * Star Review (out of 10)
     * Value for Money (out of 10)
     * Car cleanliness (out of 10)
