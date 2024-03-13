@@ -2,7 +2,7 @@ This is the planning phase for the application.
 
 # Overview
 
-InfiniteMilesRental - a car rental application that lists different car rentals in one place
+InfiniteMilesRental - a car rental application that lists different car rentals in one place (priceline)
 
 # Style
 - Color Palette - #355070, #6D597A, #B56576, #E56B6F, #EAAC8B
@@ -90,7 +90,7 @@ InfiniteMilesRental - a car rental application that lists different car rentals 
     * Id
     * Name
     * SupplierId (Foreign Key)
-    * Category Id (Foreign Key)
+    * Category Id (Foreign Key) - Can be an array that accepts multiple values
     * Gear (Automatic/Manual)
     * Images
     * locationId (Foreign Key) - Base location
@@ -99,7 +99,7 @@ When a person books a car for different pick-up and drop location for 10 days, I
 
 The car can be rented only from the base location, if it goes to a different location the rental companies make sure to return it to the base location
 
-- Price
+- Pricing
     * id
     * categoryId (Foreign Key)
     * supplier Id (Foreign Key)
@@ -136,15 +136,16 @@ Create separate tables for different category to maintain availability supplierw
 
 - Category (SUV, Sedan)
     * id
-    * name
+    * category
+    * subcategory
     * Seats
-    * Bags
 
 
 - Location
     * Id
     * Name
-    * Map coordinates
+    * Latitude
+    * Longitude
 
 - Reviews
     * ReviewId
