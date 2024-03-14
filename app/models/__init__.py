@@ -2,3 +2,8 @@ from .db import db
 from .user import User
 from .supplier import Supplier
 from .category import Category
+from .location import Location
+from .pricing import Pricing
+from .cars import Car
+from .booking import Booking
+from .review import Review

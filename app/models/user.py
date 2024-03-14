@@ -1,6 +1,7 @@
 from .db import db
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__='users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -9,3 +10,6 @@ class User(db.Model):
     email = db.Column(db.String(255))
     hashedPassword = db.Column(db.String(255))
     loginMethod = db.Column(db.Enum('traditional', 'google','github', name='login_method_enum'), nullable=False)
+
+    bookings = db.relationship('Booking',back_populates='user')
+    reviews = db.relationship('Review',back_populates='user')

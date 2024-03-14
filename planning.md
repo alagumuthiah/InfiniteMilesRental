@@ -81,9 +81,10 @@ InfiniteMilesRental - a car rental application that lists different car rentals 
     * pickup time
     * drop location
     * drop time
-    * carId - foreign key from car table (this gets updated when a user picks up a car)
-    * booking status (active/ inactive) ( updated to active when the user picks up a car)
+    * carId - foreign key from car table (this gets updated when a user books a car)
+    * booking status (completed/ active/ inactive/ cancelled) ( updated to active when the user picks up a car)
     * protected - boolean
+    * paymentMethod ('Paypal','card','TBC')
     * cost (cost of the booking)
 
 - Cars
@@ -103,31 +104,8 @@ The car can be rented only from the base location, if it goes to a different loc
     * id
     * categoryId (Foreign Key)
     * supplier Id (Foreign Key)
-    * date
+    * date (TBD - should we include date in the pricing or only location suffice)
     * price
-
-Create separate tables for different category to maintain availability supplierwise and date
-
-- SUV Availability
-    * id
-    * date (for a year - 365 rows)
-    * Enterprise (count)
-    * Sixt (count)
-    * Alamo (count)
-
-- Sedan Availability
-    * id
-    * date (for a year - 365 rows)
-    * Enterprise (count)
-    * Sixt (count)
-    * Alamo (count)
-
-- Large Availability
-    * id
-    * date (for a year - 365 rows)
-    * Enterprise (count)
-    * Sixt (count)
-    * Alamo (count)
 
 - Supplier
     * id
@@ -144,6 +122,7 @@ Create separate tables for different category to maintain availability supplierw
 - Location
     * Id
     * Name
+    * AddedPrice
     * Latitude
     * Longitude
 
@@ -158,10 +137,6 @@ Create separate tables for different category to maintain availability supplierw
     * Car condition (out of 10)
     * Pick up speed (out of 10)
 
-- Transaction
-    * id
-    * bookingId
-    * payment method
 
 Associations:
  - A User can make many bookings
