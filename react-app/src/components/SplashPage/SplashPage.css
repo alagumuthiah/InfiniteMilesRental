@@ -1,0 +1,12 @@
+.search-bar input{
+    display:block;
+    margin:10px auto;
+}
+
+.search-button{
+    background-color:#355070;
+    border-radius: 10px;
+    font-weight: bold;
+    color:white;
+    padding:10px;
+}
