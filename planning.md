@@ -169,10 +169,8 @@ Associations:
 
 `Cars`
 
-* GET /cars/suppliers/:supplierId (not booked)
-* GET /cars/category/&searchparams (not booked)
-* GET /cars/location/:locationId (not booked)
+* GET /cars/type/:Id (not booked)=>type=location,category,supplier
 * POST /cars - when a new car is included as part of the rental
-* PUT /cars/:carId - update when a car is booked
-* PUT /cars/location/:locationId - update locationID and booked to false when a car is dropped off at a location
+* PATCH /cars/supplier- update the supplier id when a specific car is bought by a different supplier
+* PATCH /cars/location - update the location when the car is moved to a different location by the vendor
 * DELETE /cars/:cardId - remove car from the rental list
