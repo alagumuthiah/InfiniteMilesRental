@@ -17,3 +17,5 @@ A car rental application facilitates the convenient and efficient process of ren
 - Initialize Alembic environment using `pipenv run flask db init`
 - Run the command `pipenv run flask db migrate -m "create <table_name> table"` to create migration file
 - `pipenv run flask db upgrade` command to run the migration
+- `pipenv flask seed all` - command to seed the database with initial data
+- `pipenv flask seed undo` - command to undo the seeded data in the database
