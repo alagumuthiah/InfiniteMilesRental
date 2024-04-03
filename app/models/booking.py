@@ -32,3 +32,6 @@ class Booking(db.Model):
     user = db.relationship('User',back_populates='bookings')
     car = db.relationship('Car',back_populates='bookings')
     category = db.relationship('Category',back_populates='bookings')
+
+    def to_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}

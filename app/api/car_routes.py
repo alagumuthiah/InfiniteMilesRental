@@ -30,12 +30,12 @@ def get_cars(query,id):
 def add_car():
     car_info = request.json
     new_car = Car(
-        name = car_info['name'],
-        categoryId = car_info['categoryId'],
-        supplierId = car_info['supplierId'],
-        locationId = car_info['locationId'],
-        gear = car_info['gear'],
-        images = car_info['images']
+        name = car_info.get('name'),
+        categoryId = car_info.get('categoryId'),
+        supplierId = car_info.get('supplierId'),
+        locationId = car_info.get('locationId'),
+        gear = car_info.get('gear'),
+        images = car_info.get('images',None)
     )
 
     db.session.add(new_car)
@@ -62,7 +62,7 @@ def update_car_supplier(car_id):
     request_body = request.json
     car = Car.query.get(car_id)
     if car:
-        car.supplierId = request_body.supplierId
+        car.supplierId = request_body.get('supplierId')
         db.session.commit()
         return jsonify({"message":"Car's supplier successfully updated"})
     else:
@@ -74,7 +74,7 @@ def update_car_location(car_id):
     request_body = request.json
     car = Car.query.get(car_id)
     if car:
-        car.supplierId = request_body.locationId
+        car.locationId = request_body.get('locationId')
         db.session.commit()
         return jsonify({"message":"Car's location successfully updated"})
     else:

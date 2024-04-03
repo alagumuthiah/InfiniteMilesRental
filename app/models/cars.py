@@ -16,6 +16,9 @@ class Car(db.Model):
     location = db.relationship('Location',back_populates='cars')
     bookings = db.relationship('Booking',back_populates='car')
 
+    def to_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
 #  * Id
 #     * Name
 #     * SupplierId (Foreign Key)

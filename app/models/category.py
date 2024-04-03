@@ -19,3 +19,6 @@ class Category(db.Model):
     cars = db.relationship('Car',back_populates='category')
     reviews = db.relationship('Review',back_populates='category')
     bookings = db.relationship('Booking',back_populates='category')
+
+    def to_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
