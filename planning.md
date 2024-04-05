@@ -7,6 +7,7 @@ InfiniteMilesRental - a car rental application that lists different car rentals 
 # Style
 - Color Palette - #355070, #6D597A, #B56576, #E56B6F, #EAAC8B
 - Color Palette - #8ECAE6, #219EBC, #023047, #FFB703, #FB8500
+- Color Palette - #03045e,#0077B6, #00B4D8, #90E0EF, #CAF0F8
 - Font - TBD
 
 # User types:
