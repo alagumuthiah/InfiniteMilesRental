@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.models import Car, db
-
+from flask_login import login_required
+from app.decorators import is_admin
 car_routes = Blueprint('cars',__name__)
 
 
@@ -27,6 +28,8 @@ def get_cars(query,id):
 
 
 @car_routes.route("/",methods=['POST'])
+@login_required
+@is_admin
 def add_car():
     car_info = request.json
     new_car = Car(
@@ -45,6 +48,8 @@ def add_car():
 
 
 @car_routes.route("/<int:car_id>",methods=['DELETE'])
+@login_required
+@is_admin
 def delete_car(car_id):
     car_to_deleted = Car.query.get(car_id)
 

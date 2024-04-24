@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
 from app.models import Booking, db
+from flask_login import login_required
 
 booking_routes =Blueprint('bookings',__name__)
 
 
 @booking_routes.route("/user/<int:user_id>")
+@login_required
 def get_bookings_by_user_id(user_id):
     bookings = Booking.query.filter_by(userId=user_id).all()
     # Convert the SQLAlchemy objects to a dictionary for JSON serialization
@@ -31,6 +33,7 @@ def get_bookings_by_user_id(user_id):
 # }
 
 @booking_routes.route("/",methods=["POST"])
+@login_required
 def create_booking():
     booking_info = request.json #required data for creating a booking is passed as JSON in request body
 
@@ -67,6 +70,7 @@ def get_bookings_by_booking_id(booking_id):
 
 
 @booking_routes.route("/<int:booking_id>",methods=["PUT"])
+@login_required
 def update_booking(booking_id):
     bookings = Booking.query.get(booking_id)
     if bookings:
@@ -80,6 +84,7 @@ def update_booking(booking_id):
 
 #update the booking status to active/ cancelled, etc
 @booking_routes.route("/<int:booking_id>",methods=["PATCH"])
+@login_required
 def update_booking_status(booking_id):
     booking_status = request.json
     # print(booking_status.status)

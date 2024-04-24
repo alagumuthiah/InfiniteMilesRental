@@ -1,19 +1,46 @@
-# # Function to hash a password
-# def hash_password(password):
-#     # Generate a salt and hash the password with bcrypt
-#     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-#     return hashed_password
+from flask import Blueprint, jsonify, request, redirect, url_for
+from flask_login import login_user
+from app.models import User, db
+from werkzeug.security import generate_password_hash, check_password_hash
 
-# # Function to verify a password against a hashed password
-# def verify_password(password, hashed_password):
-#     # Check if the password matches the hashed password using bcrypt
-#     return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
+auth_routes = Blueprint('auth',__name__)
 
-# # Example usage
-# password = "secret_password"
-# hashed_password = hash_password(password)
-# print("Hashed password:", hashed_password)
 
-# # Verify the password
-# is_valid = verify_password(password, hashed_password)
-# print("Password is valid:", is_valid)
+@auth_routes.route('/signup', methods=['POST'])
+def signup():
+    firstName = request.form['firstName']
+    lastName = request.form['lastName']
+    email = request.form['email']
+    password = request.form['password']
+
+    # Check if username already exists
+    if User.query.filter_by(email=email).first():
+        return 'Username already exists', 400
+
+    # Hash the password
+    hashedPassword = generate_password_hash(password)
+
+    # Create new user
+    new_user = User(firstName=firstName,
+                    lastName=lastName,
+                    email=email,
+                    hashedPassword=hashedPassword,
+                    loginMethod='traditional')
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect(url_for('auth.login'))
+
+@auth_routes.route('/login', methods=['POST'])
+def login():
+    email = request.form['email']
+    password = request.form['password']
+
+    # Retrieve user from database
+    user = User.query.filter_by(email=email).first()
+
+    if user and check_password_hash(user.hashedPassword, password):
+        login_user(user)
+        return 'Logged in successfully'
+    else:
+        return 'Incorrect username or password', 401
