@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255))
     hashedPassword = db.Column(db.String(255))
     loginMethod = db.Column(db.Enum('traditional', 'google','github', name='login_method_enum'), nullable=False)
+    isAdmin = db.Column(db.Boolean, default=False)
 
     bookings = db.relationship('Booking',back_populates='user')
     reviews = db.relationship('Review',back_populates='user')

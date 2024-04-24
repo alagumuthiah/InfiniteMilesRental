@@ -2,10 +2,12 @@ from flask import Blueprint, jsonify, request
 from app.models import Car, db
 from flask_login import login_required
 from app.decorators import is_admin
+
 car_routes = Blueprint('cars',__name__)
 
 
 @car_routes.route("/type/<string:query>/<int:id>")
+@login_required
 def get_cars(query,id):
     if query == 'location':
         cars = Car.query.filter_by(locationId=id)
@@ -63,6 +65,8 @@ def delete_car(car_id):
 
 #update the car's supplier (for instance when a car is brought by a different supplier)
 @car_routes.route("/<int:car_id>/supplier",methods=["PATCH"])
+@login_required
+@is_admin
 def update_car_supplier(car_id):
     request_body = request.json
     car = Car.query.get(car_id)
@@ -75,6 +79,8 @@ def update_car_supplier(car_id):
 
 #update the car's location - when it is moved from one location to another by the supplier/ vendor
 @car_routes.route("/<int:car_id>/location",methods=["PATCH"])
+@login_required
+@is_admin
 def update_car_location(car_id):
     request_body = request.json
     car = Car.query.get(car_id)

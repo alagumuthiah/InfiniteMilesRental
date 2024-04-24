@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.models import Booking, db
-from flask_login import login_required
+from flask_login import login_required, current_user
+from app.decorators import is_admin
 
 booking_routes =Blueprint('bookings',__name__)
 
@@ -8,13 +9,18 @@ booking_routes =Blueprint('bookings',__name__)
 @booking_routes.route("/user/<int:user_id>")
 @login_required
 def get_bookings_by_user_id(user_id):
-    bookings = Booking.query.filter_by(userId=user_id).all()
-    # Convert the SQLAlchemy objects to a dictionary for JSON serialization
-    bookings_data = [
-        booking.to_dict()
-        for booking in bookings
+    if current_user.id == user_id:
+        bookings = Booking.query.filter_by(userId=user_id).all()
+
+        # Convert the SQLAlchemy objects to a dictionary for JSON serialization
+        bookings_data = [
+            booking.to_dict()
+            for booking in bookings
         ]
-    return jsonify(bookings_data)
+        return jsonify(bookings_data)
+    else:
+        return jsonify({"error":"You can view only your bookings, Bad Request"}), 400
+
 
 # {
 #     "email":"john.doe@gmail.com",
@@ -61,30 +67,34 @@ def create_booking():
 @booking_routes.route("/<int:booking_id>")
 def get_bookings_by_booking_id(booking_id):
     bookings = Booking.query.filter_by(id=booking_id).all()
-    # Convert the SQLAlchemy objects to a dictionary for JSON serialization
-    bookings_data = [
-        booking.to_dict()
-        for booking in bookings
-        ]
-    return jsonify(bookings_data)
+    if bookings.userId == current_user.id:
+        # Convert the SQLAlchemy objects to a dictionary for JSON serialization
+        bookings_data = [
+            booking.to_dict()
+            for booking in bookings
+            ]
+        return jsonify(bookings_data)
+    else:
+        return jsonify({"error":"You can view only your bookings, Bad Request"}), 400
 
 
 @booking_routes.route("/<int:booking_id>",methods=["PUT"])
 @login_required
 def update_booking(booking_id):
     bookings = Booking.query.get(booking_id)
-    if bookings:
+    if bookings and bookings.userId==current_user.id:
         update_request = request.json #the entire record info that needs to be updated is passed
         updated_booking = bookings.update(update_request)
         db.session.commit()
         return jsonify({'message':'record successfully updated'})
     else:
-        return jsonify({'error':'No matching booking id found'})
+        return jsonify({'error':'No matching booking found'})
 
 
 #update the booking status to active/ cancelled, etc
 @booking_routes.route("/<int:booking_id>",methods=["PATCH"])
 @login_required
+@is_admin
 def update_booking_status(booking_id):
     booking_status = request.json
     # print(booking_status.status)

@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
+from flask_login import login_required
 from app.models import Car, Booking,Category,Supplier, Pricing, db
 from datetime import datetime
 
 search_routes = Blueprint('search',__name__)
 
 @search_routes.route("/available_cars/<int:locationId>")
+@login_required
 def available_cars(locationId):
     search_request = request.json
 
