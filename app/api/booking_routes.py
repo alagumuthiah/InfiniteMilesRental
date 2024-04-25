@@ -42,7 +42,6 @@ def get_bookings_by_user_id(user_id):
 @login_required
 def create_booking():
     booking_info = request.json #required data for creating a booking is passed as JSON in request body
-
     new_booking = Booking(
         email = booking_info.get('email'),
         userId = booking_info.get('userId'),
@@ -67,15 +66,18 @@ def create_booking():
 @booking_routes.route("/<int:booking_id>")
 def get_bookings_by_booking_id(booking_id):
     bookings = Booking.query.filter_by(id=booking_id).all()
-    if bookings.userId == current_user.id:
+    if bookings:
+        if bookings.userId == current_user.id:
         # Convert the SQLAlchemy objects to a dictionary for JSON serialization
-        bookings_data = [
-            booking.to_dict()
-            for booking in bookings
-            ]
-        return jsonify(bookings_data)
+            bookings_data = [
+                booking.to_dict()
+                for booking in bookings
+                ]
+            return jsonify(bookings_data)
+        else:
+            return jsonify({"error":"You can view only your bookings, Bad Request"}), 400
     else:
-        return jsonify({"error":"You can view only your bookings, Bad Request"}), 400
+            return jsonify({"error":"No Bookings yet"}), 400
 
 
 @booking_routes.route("/<int:booking_id>",methods=["PUT"])

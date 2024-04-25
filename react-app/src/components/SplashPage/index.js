@@ -1,7 +1,8 @@
 import './SplashPage.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { searchAvailableCars } from '../../store/carSlice';
 
 const SplashPage = () => {
 
@@ -11,8 +12,14 @@ const SplashPage = () => {
     const [dropTime, setDropTime] = useState('');
     const [dropDate, setDropDate] = useState('');
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const userInfo = useSelector((state) => state.user);
+    const available_cars = useSelector((state) => state.cars);
+
+    useEffect(() => {
+        navigate("/search");
+    }, [navigate, available_cars])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -23,9 +30,7 @@ const SplashPage = () => {
             dropDate,
             dropTime
         }
-        console.log(payload);
-        navigate("/search")
-
+        dispatch(searchAvailableCars(payload));
     }
 
     return (

@@ -5,16 +5,27 @@ from datetime import datetime
 
 search_routes = Blueprint('search',__name__)
 
-@search_routes.route("/available_cars/<int:locationId>")
+@search_routes.route("/available_cars/<int:locationId>",methods=['POST'])
 @login_required
 def available_cars(locationId):
     search_request = request.json
 
+    # Extract date and Time (pickup and drop) from the data
+    pickup_date_str = search_request.get("pickupDate")
+    pickup_time_str = search_request.get("pickupTime")
+
+    drop_date_str = search_request.get("dropDate")
+    drop_time_str = search_request.get("dropTime")
+    # Combine pickupDate and pickupTime into a single string
+    pickup_datetime_str = f"{pickup_date_str} {pickup_time_str}"
+    drop_datetime_str = f"{drop_date_str} {drop_time_str}"
+
     cars_in_location = Car.query.filter_by(locationId=locationId).join(Category).join(Supplier).all()
 
-    pickup_time = datetime.strptime(search_request.get('pickupTime'), '%Y-%m-%d %H:%M:%S')
-    drop_time = datetime.strptime(search_request.get('dropTime'), '%Y-%m-%d %H:%M:%S')
+    pickup_time = datetime.strptime(pickup_datetime_str, '%Y-%m-%d %H:%M')
+    drop_time = datetime.strptime(drop_datetime_str, '%Y-%m-%d %H:%M')
 
+    #NEED to INCLUDE location when filtering the bookings
     bookings = Booking.query.filter(
             Booking.pickupTime <= drop_time,
             Booking.dropTime >= pickup_time
