@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setUserInfo } from '../../store/userSlice';
+import { loginUser } from '../../store/userSlice';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -27,7 +27,7 @@ const LoginPage = () => {
             password
         }
         console.log(payload);
-        dispatch(setUserInfo(payload));
+        dispatch(loginUser(payload));
         handleReset();
     }
 

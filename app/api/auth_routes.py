@@ -8,14 +8,15 @@ auth_routes = Blueprint('auth',__name__)
 
 @auth_routes.route('/signup', methods=['POST'])
 def signup():
-    firstName = request.form['firstName']
-    lastName = request.form['lastName']
-    email = request.form['email']
-    password = request.form['password']
+    userDetails = request.json
+    firstName = userDetails.get('firstName')
+    lastName = userDetails.get('lastName')
+    email = userDetails.get('email')
+    password = userDetails.get('password')
 
     # Check if username already exists
     if User.query.filter_by(email=email).first():
-        return 'Username already exists', 400
+        return 'User with the given email already exists, try again with a different email', 400
 
     # Hash the password
     hashedPassword = generate_password_hash(password)
@@ -29,7 +30,7 @@ def signup():
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('auth.login'))
+    return jsonify(new_user.to_dict()), 200
 
 @auth_routes.route('/login', methods=['POST'])
 def login():

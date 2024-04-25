@@ -1,11 +1,24 @@
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { signUpUser } from '../../store/userSlice';
 const SignUpPage = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (userInfo?.data) {
+            navigate("/");
+        } else if (userInfo?.error) {
+            alert(userInfo?.error);
+        }
+    }, [navigate, userInfo]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -16,7 +29,12 @@ const SignUpPage = () => {
             password,
             confirmPassword
         }
-        console.log(payload);
+        console.log(password);
+        if (password === confirmPassword) {
+            dispatch(signUpUser(payload));
+        } else {
+            alert("Passwords don't match, try again");
+        }
     }
     return (
         <>

@@ -26,7 +26,7 @@ const userSlice = createSlice({
     }
 });
 
-export const setUserInfo = (data) => async (dispatch) => {
+export const loginUser = (data) => async (dispatch) => {
     dispatch(loginRequest());
 
     try {
@@ -36,6 +36,16 @@ export const setUserInfo = (data) => async (dispatch) => {
         dispatch(loginFailure(error.response.data));
     }
 };
+
+export const signUpUser = (data) => async (dispatch) => {
+    dispatch(loginRequest());
+    try {
+        const response = await axios.post('api/auth/signup', data);
+        dispatch(loginSuccess(response.data));
+    } catch (error) {
+        dispatch(loginFailure(error.response.data));
+    }
+}
 
 export const { loginRequest, loginSuccess, loginFailure } = userSlice.actions;
 export default userSlice.reducer;
