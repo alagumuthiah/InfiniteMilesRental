@@ -1,5 +1,7 @@
 import './SplashPage.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const SplashPage = () => {
 
@@ -8,6 +10,9 @@ const SplashPage = () => {
     const [pickupDate, setPickupDate] = useState('');
     const [dropTime, setDropTime] = useState('');
     const [dropDate, setDropDate] = useState('');
+
+    const navigate = useNavigate();
+    const userInfo = useSelector((state) => state.user);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -19,6 +24,8 @@ const SplashPage = () => {
             dropTime
         }
         console.log(payload);
+        navigate("/search")
+
     }
 
     return (
@@ -27,6 +34,7 @@ const SplashPage = () => {
                 <h2 className="mt-10 text-center text-2xl font-bold text-gray-900">
                     Navigate Your Adventure: Where Every Mile Tells a Story!
                 </h2>
+                <h3>Hello {userInfo?.data?.firstName}, {userInfo?.data?.lastName}</h3>
             </div>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={handleSubmit}>

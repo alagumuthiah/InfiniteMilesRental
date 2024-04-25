@@ -1,8 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setUserInfo } from '../../store/userSlice';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (userInfo?.data) {
+            navigate("/");
+        } else if (userInfo?.error) {
+            alert(userInfo?.error);
+        }
+    }, [navigate, userInfo]);
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -12,6 +27,7 @@ const LoginPage = () => {
             password
         }
         console.log(payload);
+        dispatch(setUserInfo(payload));
         handleReset();
     }
 

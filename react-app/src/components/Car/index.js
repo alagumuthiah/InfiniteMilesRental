@@ -12,7 +12,10 @@ const Car = () => {
             </div>
             <div className="inline-div cost-info">
                 <h3>Cost</h3>
-                <button>Pay Now</button>
+                <button
+                    type="submit"
+                    className="rounded-md bg-light-blue px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-custom-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-custom-blue"
+                >Pay</button>
             </div>
         </div>
     )

@@ -33,14 +33,17 @@ def signup():
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
-    email = request.form['email']
-    password = request.form['password']
+    print('inside login')
+    print(request.json)
+    credentials  = request.json
+    email = credentials.get('email')
+    password = credentials.get('password')
 
     # Retrieve user from database
     user = User.query.filter_by(email=email).first()
 
     if user and check_password_hash(user.hashedPassword, password):
         login_user(user)
-        return 'Logged in successfully'
+        return jsonify(user.to_dict()), 200
     else:
         return 'Incorrect username or password', 401

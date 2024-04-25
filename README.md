@@ -10,7 +10,7 @@ A car rental application facilitates the convenient and efficient process of ren
 - create .env file and .flaskenv file
 - Create a config file to load the environment variables
 - create a basic route.
-- use command `pipenv run flask run`
+- use command `pipenv run flask run --port 8000`
 - Create the database and store the database url in the .env file
 - Use alembic to create tables in database
 - To use alembic - first create a model file that have a class representing a model
