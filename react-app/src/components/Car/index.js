@@ -2,24 +2,26 @@ import './Car.css';
 
 const Car = (props) => {
     return (
-        <div className="car-container">
-            <div className="inline-div car-category-image">
-                <h3>Image place holder</h3>
+        <>
+            <div className="container">
+                <div className="section-1">
+                    <img src="/car_image.jpg" alt="car"></img>
+                    <h2>{props.data.supplier}</h2>
+                </div>
+                <div className="section-2">
+                    <h1>{props.data.subcategory} {props.data.category}</h1>
+                    <h2>{props.data.name} or similar</h2>
+                </div>
+                <div className="section-3">
+                    <h1>{props.data.price}/day</h1>
+                    <button
+                        type="submit"
+                        className="rounded-md bg-light-blue px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-custom-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-custom-blue"
+                    >Pay</button>
+                </div>
             </div>
-            <div className="inline-div main-card-info">
-                <h2>Car name:{props.data.name}</h2>
-                <h2>Supplier:{props.data.supplier}</h2>
-                <h2>Category:{props.data.category}</h2>
-                <h2>Sub Category:{props.data.subcategory}</h2>
-            </div>
-            <div className="inline-div cost-info">
-                <h3>Cost</h3>
-                <button
-                    type="submit"
-                    className="rounded-md bg-light-blue px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-custom-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-custom-blue"
-                >Pay</button>
-            </div>
-        </div>
+        </>
+
     )
 }
 

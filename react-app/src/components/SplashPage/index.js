@@ -18,7 +18,9 @@ const SplashPage = () => {
     const available_cars = useSelector((state) => state.cars);
 
     useEffect(() => {
-        navigate("/search");
+        if (available_cars?.data) {
+            navigate("/search");
+        }
     }, [navigate, available_cars])
 
     const handleSubmit = (event) => {

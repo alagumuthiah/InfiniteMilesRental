@@ -25,6 +25,8 @@ def available_cars(locationId):
     pickup_time = datetime.strptime(pickup_datetime_str, '%Y-%m-%d %H:%M')
     drop_time = datetime.strptime(drop_datetime_str, '%Y-%m-%d %H:%M')
 
+    # diff = drop_time - pickup_time
+    # print(round(diff.total_seconds() / (60 * 60 * 24)))
     #NEED to INCLUDE location when filtering the bookings
     bookings = Booking.query.filter(
             Booking.pickupTime <= drop_time,
@@ -36,16 +38,30 @@ def available_cars(locationId):
         for booking in bookings
     ]
 
-    car_data =[
-            {
-                'name':car.name,
-                'category':car.category.category,
-                'subcategory':car.category.subcategory,
-                'supplier':car.supplier.name
-            }
-            for car in cars_in_location
-            if car.id not in booked_cars
-    ]
+    car_data = []
+
+    for car in cars_in_location:
+         if car.id not in booked_cars:
+                pricing = db.session.query(Pricing).filter(Pricing.categoryId == car.categoryId).\
+                filter(Pricing.locationId == car.locationId).\
+                filter(Pricing.supplierId == car.supplierId).first()
+
+                if pricing:
+                    car_data.append({
+                        'name': car.name,
+                        'category': car.category.category,
+                        'subcategory': car.category.subcategory,
+                        'supplier': car.supplier.name,
+                        'price': pricing.price,
+                    })
+                else:
+                    car_data.append({
+                        'name': car.name,
+                        'category': car.category.category,
+                        'subcategory': car.category.subcategory,
+                        'supplier': car.supplier.name,
+                        'price': None,
+                })
 
     return jsonify(car_data)
 
